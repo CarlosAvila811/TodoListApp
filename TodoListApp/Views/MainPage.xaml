@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TodoListApp.ViewModels"
+             x:Class="TodoListApp.MainPage">
+    <ContentPage.BindingContext>
+        <viewmodels:TareaViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="10">
+        <Label Text="Lista de Tareas" FontSize="24" HorizontalOptions="Center" />
+
+        <Entry Placeholder="Nombre de la tarea" Text="{Binding Nombre}" />
+        <Picker Title="Estado" SelectedItem="{Binding Estado}">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Por hacer</x:String>
+                    <x:String>En progreso</x:String>
+                    <x:String>Finalizada</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+        <Button Text="Agregar Tarea" Command="{Binding AgregarTareaCommand}" />
+
+        <CollectionView ItemsSource="{Binding Tareas}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Nombre}" VerticalOptions="Center" />
+                        <Button Text="Eliminar" Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EliminarTareaCommand}" CommandParameter="{Binding}" />
+                        <Button Text="Editar" Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EditarTareaCommand}" CommandParameter="{Binding}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
